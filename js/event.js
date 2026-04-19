@@ -2,6 +2,14 @@ export class Event {
     #title
     #description
     #day
-    #start_time
-    #end_time
+    #startTime
+    #endTime
+
+    constructor(title, desc, day, startTime, endTime) {
+        this.#title = title;
+        this.#description = desc;
+        this.#day = day;
+        this.#startTime = startTime;
+        this.#endTime = endTime;
+    }
 }

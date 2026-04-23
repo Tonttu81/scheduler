@@ -1,5 +1,7 @@
 :root {
-    --schedule-row-height: 36px;
+    --schedule-cell-width: 220px;
+    --schedule-cell-height: 80px;
+    --schedule-times-width: 150px;
 }
 
 * {
@@ -39,11 +41,11 @@ nav li {
 
 .container-grid {
     display: grid;
-    grid-template-columns: 180px auto;
-    grid-template-rows: 70px auto;
+    grid-template-columns: var(--schedule-times-width) 1fr;
+    grid-template-rows: var(--schedule-cell-height) 1fr;
 }
 
-.create-button {
+#new-event-button {
     font-size: 15px;
     padding: 0.5em 2em;
     border: transparent;
@@ -52,37 +54,47 @@ nav li {
     border-radius: 4px;
 }
 
-.create-button:hover {
+#new-event-button:hover {
     background: rgb(225, 225, 225);
     cursor: pointer;
 }
 
-.create-button:active {
+#new-event-button:active {
     background: rgb(180, 180, 180);
 }
 
 .days-container {
-    width: 1540px;
-    display: flex;
-    flex-direction: row;
+    width: calc(7 * var(--schedule-cell-width));
+    display: grid;
+    grid-template-columns: repeat(7, var(--schedule-cell-width));
 }
 
 .days-container > div {
-   display: flex;
-   flex-direction: column;
-   flex: 1;
-   text-align: center;
+    display: flex;
+    flex-direction: column-reverse;
+    flex: 1;
+    text-align: center;
+}
+
+.schedule-wrapper {
+    display: grid;
+    grid-template-columns: var(--schedule-times-width) 1fr;
+    height: 800px;
+    width: calc(7 * var(--schedule-cell-width) + var(--schedule-times-width));
+    
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .schedule-container {
-    width: 1540px;
-    height: 960px;
+    width: calc(7 * var(--schedule-cell-width));
+    height: calc(24 * var(--schedule-cell-height));
 
     display: grid;
-    grid-template-columns: repeat(7, 220px);
-    grid-template-rows: repeat(24, 40px);
+    grid-template-columns: repeat(7, var(--schedule-cell-width));
+    grid-template-rows: repeat(24, var(--schedule-cell-height));
 
-    background-size: 220px 40px;
+    background-size: var(--schedule-cell-width) var(--schedule-cell-height);
     background-image: 
         linear-gradient(to right, grey 1px, transparent 1px), 
         linear-gradient(to bottom, grey 1px, transparent 1px);
@@ -92,7 +104,41 @@ nav li {
     border-width: 1px;
 }
 
-.schedule-container > div {
+.schedule-container > .event-container {
+    display: flex;
+    flex-direction: column;
     border-radius: 10px;
-    background-color: grey;
+    background-color: rgb(100, 116, 255);
+    margin: 2px;
+}
+
+.event-container > span {
+    color: white;
+}
+
+.times-container {
+    display: grid;
+    grid-template-rows: repeat(24, var(--schedule-cell-height));
+}
+
+.times-container > div {
+    height: 100%;
+}
+
+#new-event-window {
+    visibility: hidden;
+    position: absolute;
+    width: 50vw;
+    height: 50vh;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    
+    background-color: white;
+    box-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+    border: transparent;
+    border-radius: 4px;
+
+    display:flex;
+    flex-direction: column;
 }

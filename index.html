@@ -12,84 +12,45 @@
             <li><a>Scheduler</a></li><li><a>Settings</a></li>
         </ul>
     </nav>
-    <div id="new-event-window">
-        <div class="close-button-container">
-            <h1>Add new event</h1>
-            <button id="new-event-close-button" type="button">X</button>
-        </div>
-
-        <input id="new-event-title" type="text" name="new-event-title" placeholder="Title">
-        <textarea id="new-event-description" name="new-event-description" wrap="soft" placeholder="Description"></textarea>
-
-        <div>
-            <span>On</span>
-            <select name="new-event-days" id="new-event-days">
-                <option value="1">Monday</option>
-                <option value="2">Tuesday</option>
-                <option value="3">Wednesday</option>
-                <option value="4">Thursday</option>
-                <option value="5">Friday</option>
-                <option value="6">Saturday</option>
-                <option value="7">Sunday</option>
-            </select>
-        </div>
-
-        <div>
-            <span>Starting at</span>
-            <input id="new-event-start" type="text" name="new-event-start" placeholder="hh:mm">
-        </div>
-
-        <div>
-            <span>Until</span>
-            <input id="new-event-end" type="text" name="new-event-end" placeholder="hh:mm">
-        </div>
-
-        <div>
-            <span>Recurring?</span>
-            <input id="new-event-recurring" type="checkbox" name="new-event-recurring">
-        </div>
-        
-        <button id="create-new-event-button" type="button">Add event</button>
-    </div>
-
+    
     <div class="container-grid">
         <div>
             <button id="new-event-button" type="button">New event</button>
         </div>
         <div class="days-container">
             <div>
-                <div>Mon</div>
                 <div>6.4.</div>
+                <div>Mon</div>
             </div>
             <div>
-                <div>Tue</div>
                 <div>7.4.</div>
+                <div>Tue</div>
             </div>
             <div>
-                <div>Wed</div>
                 <div>8.4.</div>
+                <div>Wed</div>
             </div>
             <div>
-                <div>Thu</div>
                 <div>9.4.</div>
+                <div>Thu</div>
             </div>
             <div>
-                <div>Fri</div>
                 <div>10.4.</div>
+                <div>Fri</div>
             </div>
             <div>
-                <div>Sat</div>
                 <div>11.4.</div>
+                <div>Sat</div>
             </div>
             <div>
-                <div>Sun</div>
                 <div>12.4.</div>
+                <div>Sun</div>
             </div>
         </div>
 
         <div class="schedule-wrapper">
             <div class="times-container">
-                <div>00:00</div>
+                <div></div>
                 <div>01:00</div>
                 <div>02:00</div>
                 <div>03:00</div>
@@ -113,11 +74,51 @@
                 <div>21:00</div>
                 <div>22:00</div>
                 <div>23:00</div>
-                <div>24:00</div>
             </div>
             <div id="grid" class="schedule-container"></div>
         </div>
-        
+    </div>
+
+    <div id="new-event-window">
+        <form id="new-event-form">
+            <div class="close-button-container">
+                <h1>Add new event</h1>
+                <button id="new-event-close-button" type="button">X</button>
+            </div>
+
+            <input type="text" name="title" placeholder="Title">
+            <textarea name="desc" wrap="soft" placeholder="Description"></textarea>
+
+            <div>
+                <span>On</span>
+                <select name="days">
+                    <option value="1">Monday</option>
+                    <option value="2">Tuesday</option>
+                    <option value="3">Wednesday</option>
+                    <option value="4">Thursday</option>
+                    <option value="5">Friday</option>
+                    <option value="6">Saturday</option>
+                    <option value="7">Sunday</option>
+                </select>
+            </div>
+
+            <div>
+                <span>Starting at</span>
+                <input type="text" name="start" placeholder="hh:mm">
+            </div>
+
+            <div>
+                <span>Until</span>
+                <input type="text" name="end" placeholder="hh:mm">
+            </div>
+
+            <div>
+                <span>Recurring?</span>
+                <input type="checkbox" name="recurring">
+            </div>
+            
+            <button id="create-new-event-button" type="submit">Add event</button>
+        </form>
     </div>
 
     <script type="module" src="./js/functions.js"></script>

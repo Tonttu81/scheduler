@@ -35,14 +35,9 @@ localstorage.setItem(
     }
 )
 
-layout
 
-2 by 2 grid
-
-top left empty
-
-bottom left contains times
-
-top right contains horizontal flex day of the week and date
-
-bottom right contains schedule grid
+todo
+media query to make schedule only 1 column wide when monitor size is smaller
+javascript to show current day on grid if grid is only one column wide
+javascript to let user scroll to different days if only one column is shown
+make event divs clickable to open new window with more info and options

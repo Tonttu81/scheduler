@@ -1,20 +1,23 @@
 const gridElement = document.getElementById('grid')
+const cellHeight = parseFloat(
+    window.getComputedStyle(document.body).getPropertyValue('--schedule-cell-height')
+)
+
+// New event window elements
+
 const newEventButton = document.getElementById('new-event-button')
 const newEventWindow = document.getElementById('new-event-window')
 const newEventCloseButton = document.getElementById('new-event-close-button')
 const createEventButton = document.getElementById('create-new-event-button')
-
-// New event window elements
-const dayDropdown = document.getElementById('new-event-days')
-const eventTitleInput = document.getElementById('new-event-title')
-const eventDescriptionInput = document.getElementById('new-event-description')
-const startTimeInput = document.getElementById('new-event-start')
-const endTimeInput = document.getElementById('new-event-end')
-const recurringEventInput = document.getElementById('new-event-recurring')
+const eventForm = document.getElementById('new-event-form')
 
 newEventButton.addEventListener('click', showNewEventWindow)
 newEventCloseButton.addEventListener('click', closeNewEventWindow)
-createEventButton.addEventListener('click', validateAndCreateEvent)
+//createEventButton.addEventListener('click', validateAndCreateEvent)
+eventForm.addEventListener('submit', (e) => {
+    e.preventDefault()
+    validateAndCreateEvent()
+})
 
 function showNewEventWindow() {
     newEventWindow.style.visibility = 'visible'
@@ -23,10 +26,10 @@ function showNewEventWindow() {
     const currentDay = date.getDay()
     const currentHour = date.getHours()
 
-    dayDropdown.value = currentDay
-    startTimeInput.value = String(currentHour) + ':00'
-    endTimeInput.value = String(currentHour + 1) + ':00'
-    recurringEventInput.checked = false
+    eventForm.elements.days.value = currentDay
+    eventForm.elements.start.value = String(currentHour) + ':00'
+    eventForm.elements.end.value = String(currentHour + 1) + ':00'
+    eventForm.elements.recurring.checked = true
 }
 
 function closeNewEventWindow() {
@@ -34,13 +37,18 @@ function closeNewEventWindow() {
 }
 
 function timeStrToGrid(timeStr) {
-    //const [startHours, startMinutes] = startTime.split(':').map(Number)
+    const time = timeStr.split(/[:.]/)
 
-    const hour = timeStr.split(':')[0]
-    // Adding one since otherwise events would be an hour too early
-    const row = Number(hour) + 1
+    const hours = Number(time[0])
+    let minutes
+    if (time[1]) {
+        minutes = Number(time[1])
+    }
 
-    return row
+    return {
+        row: hours + 1,
+        offset: minutes / 60 
+    }
 }
 
 function createEventElements(title, description, day, startTime, endTime) {
@@ -48,13 +56,25 @@ function createEventElements(title, description, day, startTime, endTime) {
     newEvent.className = 'event-container'
     gridElement.appendChild(newEvent)
 
-    // Replacing . with : incase the user tried using the wrong separator
-    startTime = startTime.replace('.', ':')
-    endTime = endTime.replace('.', ':')
+    const { row: startRow, offset: startOffset } = timeStrToGrid(startTime)
+    const { row: endRow, offset: endOffset } = timeStrToGrid(endTime)
 
     newEvent.style.gridColumnStart = day
-    newEvent.style.gridRowStart = timeStrToGrid(startTime)
-    newEvent.style.gridRowEnd = timeStrToGrid(endTime)
+    newEvent.style.gridRowStart = startRow
+    
+  
+    // Applying offset to the start of the event in case event for example starts at 10:25
+    newEvent.style.top = String(cellHeight * startOffset) + 'px'
+
+    // Calculating how long the cell should be so
+    // this way we can have events that for example start at 10:25 and end at 12:25
+    const startY = startRow * cellHeight + startOffset * cellHeight
+    const endY = endRow * cellHeight + endOffset * cellHeight
+    const height = endY - startY
+    newEvent.style.height = String(height) + 'px'
+
+    console.log(title + ' start: ' + startY)
+    console.log(title + ' end: ' + endY)
 
     const newEventTitle = document.createElement('span')
     newEvent.appendChild(newEventTitle)
@@ -70,22 +90,34 @@ function createEventElements(title, description, day, startTime, endTime) {
 }
 
 function validateAndCreateEvent() {
-    const title = eventTitleInput.value
-    const desc = eventDescriptionInput.value
+    const title = eventForm.elements.title.value
+    const desc = eventForm.elements.desc.value
+    const day = eventForm.elements.days.value
+    const startTime = eventForm.elements.start.value
+    const endTime = eventForm.elements.end.value
 
-    const day = dayDropdown.value
-
-    const startTime = startTimeInput.value
-    const endTime = endTimeInput.value
-
-    const test = Number(startTime.replace(':', '.'))
-    console.log(test)
-    if (test >= 0 && test <= 24) {
-        createEventElements(title, desc, day, startTime, endTime)
-        closeNewEventWindow()
+    /* 
+    regex to check that time is in format hh, hh.mm or hh:mm
+    1. [01]?\d = either 0 or 1 as first digit, ? means its optional so first digit can also be empty, \d is any digit as second digit
+    2. | = OR, if the first conditions dont apply, 2[0-3] is checked next 
+    3. 2[0-4] = if first digit is 2, second digit can be from 0-4
+    4. [:.] = either . or : as separator
+    5. [0-5]\d = first digit of minutes can be 0-5 and second digit can be any from 0-9
+    6. ? means its optional so separator and minutes don't have to be included 
+    */
+    const timeRegex = /^([01]?\d|2[0-4])([:.]([0-5]\d))?$/
+    if (!timeRegex.test(startTime)) {
+        console.log('Start time wrong format')
+        return
+    } else if (!timeRegex.test(endTime)) {
+        console.log('End time wrong format')
+        return
     }
 
-    
+    createEventElements(title, desc, day, startTime, endTime)
+    closeNewEventWindow()
 }
 
 createEventElements('test', 'test description', 1, '9:00', '10:00')
+createEventElements('offset', 'test description', 1, '10.30', '11.20')
+createEventElements('long', 'test description', 2, '10.20', '12.00')

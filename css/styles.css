@@ -3,11 +3,11 @@
     --schedule-row-count: 24;
     --schedule-cell-width: 220px;
     --schedule-cell-height: 80px;
-    --schedule-times-width: 150px;
+    --schedule-times-width: clamp(3rem, 8vw, 6rem);
 }
 
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 html {
@@ -22,22 +22,19 @@ body {
 
 nav {
     height: 50px;
-    width: 100%;
     border-bottom-style: solid;
     border-bottom-width: 1px;
 }
 
 nav ul {
-    height: 100%;
     list-style-type: none;
     margin: 0;
     padding: 0;
+    display: flex;
 }
 
 nav li {
-    display: inline-block;
-    width: 10vw;
-    height: 100%;
+    flex-basis: 12rem;
     text-align: center;
 }
 
@@ -45,11 +42,13 @@ nav li {
     display: grid;
     grid-template-columns: var(--schedule-times-width) 1fr;
     grid-template-rows: var(--schedule-cell-height) 1fr;
+
+    margin: 0;
 }
 
 #new-event-button {
     font-size: 15px;
-    padding: 0.5em 2em;
+    width: var(--schedule-times-width);
     border: transparent;
     box-shadow: 2px 2px 4px rgba(0,0,0,0.4);
     background: white;
@@ -79,15 +78,14 @@ nav li {
 }
 
 .schedule-wrapper {
+    height: 80vh;
+
     display: grid;
     grid-template-columns: var(--schedule-times-width) 1fr;
-    height: 800px;
     width: calc(7 * var(--schedule-cell-width) + var(--schedule-times-width));
     
     overflow-y: scroll;
     overflow-x: hidden;
-
-    border-style: solid;
 }
 
 .schedule-container {
@@ -98,6 +96,7 @@ nav li {
     grid-template-columns: repeat(7, var(--schedule-cell-width));
     grid-template-rows: repeat(24, var(--schedule-cell-height));
 
+    background-position: 1px -1px;
     background-size: var(--schedule-cell-width) var(--schedule-cell-height);
     background-image: 
         linear-gradient(to right, grey 1px, transparent 1px), 
@@ -131,14 +130,16 @@ nav li {
 }
 
 #new-event-window {
-    visibility: hidden;
+    width: min(50rem, 90vw);
+    height: min(40rem, 80vh);
+    
     position: absolute;
-    width: 50vw;
-    height: 50vh;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
     
+    visibility: hidden;
+
     background-color: white;
     box-shadow: 2px 2px 4px rgba(0,0,0,0.4);
     border: transparent;
@@ -149,3 +150,19 @@ nav li {
     display:flex;
     flex-direction: column;
 }
+
+@media only screen and (max-width: 1200px) {
+    .schedule-container {
+        
+    }
+
+    .days-container {
+        
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    nav li {
+        flex: 1;
+    }
+}   

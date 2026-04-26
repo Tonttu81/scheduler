@@ -1,10 +1,9 @@
 const gridElement = document.getElementById('grid')
-const cellHeight = parseFloat(
+let cellHeight = parseFloat(
     window.getComputedStyle(document.body).getPropertyValue('--schedule-cell-height')
 )
 
 // New event window elements
-
 const newEventButton = document.getElementById('new-event-button')
 const newEventWindow = document.getElementById('new-event-window')
 const newEventCloseButton = document.getElementById('new-event-close-button')
@@ -13,11 +12,13 @@ const eventForm = document.getElementById('new-event-form')
 
 newEventButton.addEventListener('click', showNewEventWindow)
 newEventCloseButton.addEventListener('click', closeNewEventWindow)
-//createEventButton.addEventListener('click', validateAndCreateEvent)
 eventForm.addEventListener('submit', (e) => {
     e.preventDefault()
     validateAndCreateEvent()
 })
+
+window.addEventListener('resize', updateCellSize)
+updateCellSize()
 
 function showNewEventWindow() {
     newEventWindow.style.visibility = 'visible'
@@ -26,6 +27,7 @@ function showNewEventWindow() {
     const currentDay = date.getDay()
     const currentHour = date.getHours()
 
+    console.log(currentDay)
     eventForm.elements.days.value = currentDay
     eventForm.elements.start.value = String(currentHour) + ':00'
     eventForm.elements.end.value = String(currentHour + 1) + ':00'
@@ -61,7 +63,6 @@ function createEventElements(title, description, day, startTime, endTime) {
 
     newEvent.style.gridColumnStart = day
     newEvent.style.gridRowStart = startRow
-    
   
     // Applying offset to the start of the event in case event for example starts at 10:25
     newEvent.style.top = String(cellHeight * startOffset) + 'px'
@@ -72,6 +73,9 @@ function createEventElements(title, description, day, startTime, endTime) {
     const endY = endRow * cellHeight + endOffset * cellHeight
     const height = endY - startY
     newEvent.style.height = String(height) + 'px'
+
+    newEvent.dataset.startTime = startTime
+    newEvent.dataset.endTime = endTime
 
     console.log(title + ' start: ' + startY)
     console.log(title + ' end: ' + endY)
@@ -116,6 +120,38 @@ function validateAndCreateEvent() {
 
     createEventElements(title, desc, day, startTime, endTime)
     closeNewEventWindow()
+}
+
+function updateEventSize() {
+    const events = document.querySelectorAll('.event-container');
+
+    events.forEach(event => {
+        // Same calculations as when creating a new event
+        const { row: startRow, offset: startOffset } = timeStrToGrid(event.dataset.startTime)
+        const { row: endRow, offset: endOffset } = timeStrToGrid(event.dataset.endTime)
+
+        event.style.top = String(cellHeight * startOffset) + 'px'
+        const startY = startRow * cellHeight + startOffset * cellHeight
+        const endY = endRow * cellHeight + endOffset * cellHeight
+        const height = endY - startY
+        event.style.height = String(height) + 'px'
+    })
+}
+
+function updateCellSize() {
+    // Rounding because pixels with decimals make the grid lines look weird sometimes
+    const width = Math.floor(document.body.clientWidth / 8)
+    const height = Math.floor((document.body.clientHeight * 2) / 24)
+    
+    document.documentElement.style.setProperty('--schedule-cell-width', width + 'px')
+
+    document.documentElement.style.setProperty('--schedule-cell-height', height + 'px')
+
+    cellHeight = parseFloat(
+        window.getComputedStyle(document.body).getPropertyValue('--schedule-cell-height')
+    )
+
+    updateEventSize()
 }
 
 createEventElements('test', 'test description', 1, '9:00', '10:00')

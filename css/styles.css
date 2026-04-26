@@ -65,9 +65,9 @@ nav li {
 }
 
 .days-container {
-    width: calc(7 * var(--schedule-cell-width));
+    width: calc(var(--schedule-column-count) * var(--schedule-cell-width));
     display: grid;
-    grid-template-columns: repeat(7, var(--schedule-cell-width));
+    grid-template-columns: repeat(var(--schedule-column-count), var(--schedule-cell-width));
 }
 
 .days-container > div {
@@ -82,21 +82,21 @@ nav li {
 
     display: grid;
     grid-template-columns: var(--schedule-times-width) 1fr;
-    width: calc(7 * var(--schedule-cell-width) + var(--schedule-times-width));
+    width: calc(var(--schedule-column-count) * var(--schedule-cell-width) + var(--schedule-times-width));
     
     overflow-y: scroll;
     overflow-x: hidden;
 }
 
 .schedule-container {
-    width: calc(7 * var(--schedule-cell-width));
-    height: calc(24 * var(--schedule-cell-height));
+    width: calc(var(--schedule-column-count) * var(--schedule-cell-width));
+    height: calc(var(--schedule-row-count) * var(--schedule-cell-height));
 
     display: grid;
-    grid-template-columns: repeat(7, var(--schedule-cell-width));
-    grid-template-rows: repeat(24, var(--schedule-cell-height));
+    grid-template-columns: repeat(var(--schedule-column-count), var(--schedule-cell-width));
+    grid-template-rows: repeat(var(--schedule-row-count), var(--schedule-cell-height));
 
-    background-position: 1px -1px;
+    background-position: 0px -1px;
     background-size: var(--schedule-cell-width) var(--schedule-cell-height);
     background-image: 
         linear-gradient(to right, grey 1px, transparent 1px), 
@@ -118,7 +118,7 @@ nav li {
 
 .times-container {
     display: grid;
-    grid-template-rows: repeat(24, var(--schedule-cell-height));
+    grid-template-rows: repeat(var(--schedule-row-count), var(--schedule-cell-height));
 }
 
 .times-container > div {
@@ -151,18 +151,22 @@ nav li {
     flex-direction: column;
 }
 
-@media only screen and (max-width: 1200px) {
-    .schedule-container {
-        
-    }
-
-    .days-container {
-        
-    }
-}
-
 @media only screen and (max-width: 480px) {
     nav li {
         flex: 1;
     }
-}   
+}
+
+@media only screen and (max-width: 400px) {
+    :root {
+        --schedule-column-count: 1
+    }
+
+    .days-container > div {
+        visibility: hidden;
+    }
+
+    .days-container > div:first-child {
+        visibility: visible;
+    }
+}

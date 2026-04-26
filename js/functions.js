@@ -140,16 +140,14 @@ function updateEventSize() {
 
 function updateCellSize() {
     // Rounding because pixels with decimals make the grid lines look weird sometimes
-    const width = Math.floor(document.body.clientWidth / 8)
+    const width = Math.floor(document.body.clientWidth / 7)
     const height = Math.floor((document.body.clientHeight * 2) / 24)
     
     document.documentElement.style.setProperty('--schedule-cell-width', width + 'px')
 
     document.documentElement.style.setProperty('--schedule-cell-height', height + 'px')
 
-    cellHeight = parseFloat(
-        window.getComputedStyle(document.body).getPropertyValue('--schedule-cell-height')
-    )
+    cellHeight = height
 
     updateEventSize()
 }

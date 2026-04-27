@@ -27,7 +27,13 @@ function showNewEventWindow() {
     const currentDay = date.getDay()
     const currentHour = date.getHours()
 
-    console.log(currentDay)
+    // getDay returns 0 if its a Sunday so converting it
+    if (currentDay == 0) {
+        currentDay = 7
+    }
+
+    eventForm.elements.title.value = ''
+    eventForm.elements.desc.value = ''
     eventForm.elements.days.value = currentDay
     eventForm.elements.start.value = String(currentHour) + ':00'
     eventForm.elements.end.value = String(currentHour + 1) + ':00'
@@ -81,12 +87,26 @@ function createEventElements(title, description, day, startTime, endTime) {
 
     if (title == '') {
         title = 'No title'
-    }
+    } 
+    //else if (title.length > 15) {
+    //    title = title.slice(0, 15) + '...'
+    //}
+
     newEventTitle.innerHTML = title
-    
-    const newEventTime = document.createElement('span')
-    newEvent.appendChild(newEventTime)
-    newEventTime.innerHTML = startTime + ' - ' + endTime
+
+    // Dont display time if event is too short for it to fit well
+    if (height > cellHeight / 2) {
+        const newEventTime = document.createElement('span')
+        newEvent.appendChild(newEventTime)
+        newEventTime.innerHTML = startTime + ' - ' + endTime
+    }
+
+    // Same with description
+    if (height >= cellHeight * 0.9) {
+        const desc = document.createElement('span')
+        newEvent.appendChild(desc)
+        desc.innerHTML = description
+    }
 }
 
 function validateAndCreateEvent() {
@@ -129,3 +149,5 @@ function updateCellSize() {
 createEventElements('test', 'test description', 1, '9:00', '10:00')
 createEventElements('offset', 'test description', 1, '10.30', '11.20')
 createEventElements('long', 'test description', 2, '10.20', '12.00')
+createEventElements('long', 'test description', 7, '11.30', '12.00')
+createEventElements('longggggggggggggggggggggggggggggggg', 'test description test oibdasoidbasoidabsiodasioasbdioasbdioasbdoiasbdoiasbodiasbiodasb', 3, '15:00', '16:20')

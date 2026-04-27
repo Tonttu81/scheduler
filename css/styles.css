@@ -4,9 +4,15 @@
     --schedule-cell-width: 220px;
     --schedule-cell-height: 80px;
     --schedule-times-width: clamp(3rem, 8vw, 20rem);
-    --schedule-event-left-offset: 10px;
+
     --main-color: rgb(100, 116, 255);
     --dark-text-color: #2b2b2b;
+
+    --line-color: rgba(0, 0, 0, 0.5);
+}
+
+* {
+    box-sizing: border-box;
 }
 
 html {
@@ -58,7 +64,7 @@ nav a {
 
 nav a:hover {
     background: rgba(100, 116, 255, 0.1);
-    color: rgb(100, 116, 255);
+    color: var(--main-color);;
 }
 
 nav a:active {
@@ -67,14 +73,14 @@ nav a:active {
 
 nav a.active {
     background: rgba(100, 116, 255, 0.15);
-    color: rgb(100, 116, 255);
+    color: var(--main-color);;
     font-weight: 600;
 }
 
 .container-grid {
     display: grid;
-    grid-template-columns: calc(var(--schedule-times-width) + var(--schedule-event-left-offset)) 1fr;
-    grid-template-rows: 10vh 1fr;
+    grid-template-columns: calc(var(--schedule-times-width)) 1fr;
+    grid-template-rows: 7vh 1fr;
 }
 
 .button-container {
@@ -88,7 +94,7 @@ nav a.active {
     
     margin: 1rem;
 
-    color: rgb(100, 116, 255);
+    color: var(--main-color);;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
     border: 1px solid rgba(100, 116, 255, 0.25);
 
@@ -140,17 +146,31 @@ nav a.active {
     grid-template-columns: repeat(var(--schedule-column-count), var(--schedule-cell-width));
 }
 
-.days-container > div {
+.day {
     display: flex;
-    flex-direction: column-reverse;
-    flex: 1;
-    text-align: center;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.day > .date {
+    font-size: 0.8rem;
+    color: rgba(0, 0, 0, 0.50);
+}
+
+.day > .weekday {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.day.today > .date, .day.today > .weekday {
+    color: var(--main-color);;
 }
 
 .schedule-wrapper {
     height: 65vh;
-    width: 90vw;
-    padding-right: 10vw;
+    width: 100vw;
+    padding-right: var(--schedule-times-width);
 
     display: grid;
     grid-template-columns: var(--schedule-times-width) 1fr;
@@ -167,29 +187,47 @@ nav a.active {
     grid-template-columns: repeat(var(--schedule-column-count), 1fr);
     grid-template-rows: repeat(var(--schedule-row-count), var(--schedule-cell-height));
 
-    background-position: var(--schedule-event-left-offset) -1px;
+    background-position: 0px -1px;
     background-size: var(--schedule-cell-width) var(--schedule-cell-height);
     background-image: 
-        linear-gradient(to right, grey 1px, transparent 1px), 
-        linear-gradient(to bottom, grey 1px, transparent 1px);
-
-    border-right-style: solid;
-    border-width: 1px;
+        linear-gradient(to right, rgba(0, 0, 0, 0.5) 1px, transparent 1px), 
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.5) 1px, transparent 1px);
 }
 
 .event-container {
-    position: relative;
     display: flex;
     flex-direction: column;
+
+    position: relative;
+
+    background-color: var(--main-color);;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    
     border-radius: 10px;
-    background-color: rgb(100, 116, 255);
-    left: var(--schedule-event-left-offset);
-    margin: 0px;
+    padding: 0.25rem;
+    padding: 0.2rem 0.4rem;
+    margin-right: 0.5rem;
+
+    overflow: hidden;
 }
 
 .event-container > span {
+    font-size: 0.9rem;
+    opacity: 80%;
     color: white;
-    font-size: 0.8rem;
+
+    overflow: hidden;
+}
+
+.event-container > span:first-child {
+    font-size: 1rem;
+    opacity: 100%;
+
+    white-space: nowrap;
+}
+
+.event-container > span:last-child {
+    white-space: wrap;
 }
 
 .times-container {
@@ -198,11 +236,14 @@ nav a.active {
 }
 
 .times-container > div {
-    display:flex;
+    display: flex;
     justify-content: flex-end;
     margin-right: 5px;
 
-    transform: translateY(-17%);
+    font-size: 0.8rem;
+    color: rgba(0, 0, 0, 0.6);
+
+    transform: translateY(calc(var(--schedule-cell-height) * -0.14));
 }
 
 #new-event-window {
@@ -270,7 +311,7 @@ nav a.active {
 
 #new-event-form input:focus, #new-event-form textarea:focus, #new-event-form select:focus {
     outline: none;
-    border-color: rgb(100, 116, 255);
+    border-color: var(--main-color);
     box-shadow: 0 0 0 2px rgba(100, 116, 255, 0.2);
 }
 
@@ -281,7 +322,7 @@ nav a.active {
     border: none;
     border-radius: 8px;
 
-    background: rgb(100, 116, 255);
+    background: var(--main-color);
     color: white;
 
     cursor: pointer;
@@ -293,8 +334,11 @@ nav a.active {
     background: rgb(85, 100, 240);
 }
 
-@media only screen and (max-width: 480px) {
-    
+/* These two are kind of stupid but no time to fix :( */
+@media only screen and (max-height: 580px) {
+    .container-grid {
+        row-gap: 5vh;
+    }
 }
 
 @media only screen and (max-height: 600px) {
@@ -342,5 +386,6 @@ nav a.active {
 
     .schedule-container {
         background-size: 100% var(--schedule-cell-height);
+        border-right: 1px solid rgba(0, 0, 0, 0.5);
     }
 }

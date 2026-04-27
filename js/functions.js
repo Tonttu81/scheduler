@@ -1,14 +1,13 @@
 const gridElement = document.getElementById('grid')
-let cellHeight = parseFloat(
-    window.getComputedStyle(document.body).getPropertyValue('--schedule-cell-height')
-)
-
-// New event window elements
 const newEventButton = document.getElementById('new-event-button')
 const newEventWindow = document.getElementById('new-event-window')
 const newEventCloseButton = document.getElementById('new-event-close-button')
 const createEventButton = document.getElementById('create-new-event-button')
 const eventForm = document.getElementById('new-event-form')
+
+let cellHeight = parseFloat(
+    window.getComputedStyle(document.body).getPropertyValue('--schedule-cell-height')
+)
 
 newEventButton.addEventListener('click', showNewEventWindow)
 newEventCloseButton.addEventListener('click', closeNewEventWindow)
@@ -20,11 +19,13 @@ eventForm.addEventListener('submit', (e) => {
 window.addEventListener('resize', updateCellSize)
 updateCellSize()
 
+updateDates()
+
 function showNewEventWindow() {
     newEventWindow.style.visibility = 'visible'
 
     const date = new Date()
-    const currentDay = date.getDay()
+    let currentDay = date.getDay()
     const currentHour = date.getHours()
 
     // getDay returns 0 if its a Sunday so converting it
@@ -144,6 +145,39 @@ function updateCellSize() {
     // Rounding because pixels with decimals make the grid lines look weird sometimes
     const width = Math.floor(scheduleContainer.clientWidth / 7)
     document.documentElement.style.setProperty('--schedule-cell-width', width + 'px')
+}
+
+function updateDates() {
+    const date = new Date()
+    let currentDay = date.getDay()
+    // -1 since querySelectorAll first element index is 0
+    if (currentDay == 0) {
+        currentDay = 6
+    } else {
+        currentDay--
+    }
+
+    console.log(currentDay)
+
+    const monday = new Date()
+    monday.setDate(date.getDate() - currentDay)
+
+    const dayElements = document.querySelectorAll('.day')
+    dayElements[currentDay].classList.add('today')
+
+    for (let i = 0; i < dayElements.length; i++) {
+        const dateElement = dayElements[i].querySelector('.date')
+
+        // Clone the Monday object so that we are working with previous Monday's date and not current date
+        const tempDate = new Date(monday)
+        tempDate.setDate(monday.getDate() + i)
+
+        // January is 0 so we add one
+        const date = String(tempDate.getDate())
+        const month = String(tempDate.getMonth() + 1)
+
+        dateElement.innerHTML = date + '.' + month + '.'
+    }
 }
 
 createEventElements('test', 'test description', 1, '9:00', '10:00')

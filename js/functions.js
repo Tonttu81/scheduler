@@ -31,7 +31,6 @@ function showNewEventWindow() {
     eventForm.elements.days.value = currentDay
     eventForm.elements.start.value = String(currentHour) + ':00'
     eventForm.elements.end.value = String(currentHour + 1) + ':00'
-    eventForm.elements.recurring.checked = true
 }
 
 function closeNewEventWindow() {
@@ -77,9 +76,6 @@ function createEventElements(title, description, day, startTime, endTime) {
     newEvent.dataset.startTime = startTime
     newEvent.dataset.endTime = endTime
 
-    console.log(title + ' start: ' + startY)
-    console.log(title + ' end: ' + endY)
-
     const newEventTitle = document.createElement('span')
     newEvent.appendChild(newEventTitle)
 
@@ -122,36 +118,12 @@ function validateAndCreateEvent() {
     closeNewEventWindow()
 }
 
-function updateEventSize() {
-    const events = document.querySelectorAll('.event-container');
-
-    events.forEach(event => {
-        // Same calculations as when creating a new event
-        const { row: startRow, offset: startOffset } = timeStrToGrid(event.dataset.startTime)
-        const { row: endRow, offset: endOffset } = timeStrToGrid(event.dataset.endTime)
-
-        event.style.top = String(cellHeight * startOffset) + 'px'
-        const startY = startRow * cellHeight + startOffset * cellHeight
-        const endY = endRow * cellHeight + endOffset * cellHeight
-        const height = endY - startY
-        event.style.height = String(height) + 'px'
-    })
-}
-
 function updateCellSize() {
     const scheduleContainer = document.querySelector('.schedule-container')
 
     // Rounding because pixels with decimals make the grid lines look weird sometimes
     const width = Math.floor(scheduleContainer.clientWidth / 7)
-    //const height = Math.floor((scheduleContainer.clientHeight) / 24)
-    
     document.documentElement.style.setProperty('--schedule-cell-width', width + 'px')
-
-    //document.documentElement.style.setProperty('--schedule-cell-height', height + 'px')
-
-    //cellHeight = height
-
-    //updateEventSize()
 }
 
 createEventElements('test', 'test description', 1, '9:00', '10:00')

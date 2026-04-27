@@ -4,6 +4,7 @@
     --schedule-cell-width: 220px;
     --schedule-cell-height: 80px;
     --schedule-times-width: clamp(3rem, 8vw, 20rem);
+    --schedule-event-left-offset: 10px;
     --main-color: rgb(100, 116, 255);
     --dark-text-color: #2b2b2b;
 }
@@ -72,7 +73,7 @@ nav a.active {
 
 .container-grid {
     display: grid;
-    grid-template-columns: var(--schedule-times-width) 1fr;
+    grid-template-columns: calc(var(--schedule-times-width) + var(--schedule-event-left-offset)) 1fr;
     grid-template-rows: 10vh 1fr;
 }
 
@@ -149,12 +150,16 @@ nav a.active {
 .schedule-wrapper {
     height: 65vh;
     width: 90vw;
+    padding-right: 10vw;
 
     display: grid;
     grid-template-columns: var(--schedule-times-width) 1fr;
     
     overflow-y: scroll;
     overflow-x: hidden;
+
+    border-top: 1px solid rgba(0, 0, 0, 0.5);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.5);
 }
 
 .schedule-container {
@@ -162,11 +167,14 @@ nav a.active {
     grid-template-columns: repeat(var(--schedule-column-count), 1fr);
     grid-template-rows: repeat(var(--schedule-row-count), var(--schedule-cell-height));
 
-    background-position: 0px -1px;
+    background-position: var(--schedule-event-left-offset) -1px;
     background-size: var(--schedule-cell-width) var(--schedule-cell-height);
     background-image: 
         linear-gradient(to right, grey 1px, transparent 1px), 
         linear-gradient(to bottom, grey 1px, transparent 1px);
+
+    border-right-style: solid;
+    border-width: 1px;
 }
 
 .schedule-container > .event-container {
@@ -175,6 +183,7 @@ nav a.active {
     flex-direction: column;
     border-radius: 10px;
     background-color: rgb(100, 116, 255);
+    left: var(--schedule-event-left-offset);
     margin: 0px;
 }
 
@@ -193,7 +202,7 @@ nav a.active {
     justify-content: flex-end;
     margin-right: 5px;
 
-    transform: translateY(-15%);
+    transform: translateY(-17%);
 }
 
 #new-event-window {
@@ -258,24 +267,14 @@ nav a.active {
     }
     
     .days-container > div {
-        visibility: hidden;
+        display: none;
     }
 
     .days-container > div:first-child {
-        visibility: visible;
+        display: flex;
     }
 
     .schedule-container {
-        height: calc(var(--schedule-row-count) * var(--schedule-cell-height));
-
-        display: grid;
-        grid-template-columns: repeat(var(--schedule-column-count), var(--schedule-cell-width));
-        grid-template-rows: repeat(var(--schedule-row-count), var(--schedule-cell-height));
-
-        background-position: 0px -1px;
         background-size: 100% var(--schedule-cell-height);
-        background-image: 
-            linear-gradient(to right, grey 1px, transparent 1px), 
-            linear-gradient(to bottom, grey 1px, transparent 1px);
     }
 }

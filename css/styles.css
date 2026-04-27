@@ -4,6 +4,8 @@
     --schedule-cell-width: 220px;
     --schedule-cell-height: 80px;
     --schedule-times-width: clamp(3rem, 8vw, 20rem);
+    --main-color: rgb(100, 116, 255);
+    --dark-text-color: #2b2b2b;
 }
 
 html {
@@ -18,20 +20,54 @@ body {
 
 nav {
     height: 50px;
-    border-bottom-style: solid;
-    border-bottom-width: 1px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+
+    display: flex;
+    align-items: center;
 }
 
 nav ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
+    width: 100%;
+    padding: 0 1rem;
+
     display: flex;
+    gap: 1rem;
 }
 
 nav li {
-    flex-basis: 12rem;
-    text-align: center;
+    display: flex;
+}
+
+nav a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 2.5rem;
+    padding: 0 1rem;
+
+    text-decoration: none;
+
+    color: var(--dark-text-color);
+
+    border-radius: 8px;
+
+    transition: all 0.15s ease;
+}
+
+nav a:hover {
+    background: rgba(100, 116, 255, 0.1);
+    color: rgb(100, 116, 255);
+}
+
+nav a:active {
+    background: rgba(100, 116, 255, 0.2);
+}
+
+nav a.active {
+    background: rgba(100, 116, 255, 0.15);
+    color: rgb(100, 116, 255);
+    font-weight: 600;
 }
 
 .container-grid {
@@ -40,38 +76,57 @@ nav li {
     grid-template-rows: 10vh 1fr;
 }
 
-#new-event-button {
-    width: 100%;
-    min-width: 5rem;
-    height: 3rem;
-
+.button-container {
     display: flex;
+}
+
+.button-container > button {
+    display: none;
     align-items: center;
     justify-content: center;
+    
+    margin: 1rem;
+
+    color: rgb(100, 116, 255);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(100, 116, 255, 0.25);
+
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+#previous-day-button, #next-day-button {
+    width: 3rem;
+    height: 3rem;
+
+    font-size: 1.2rem;
+
+    background: white;
+    
+    border-radius: 50%;
+}
+
+#new-event-button {
+    display: flex;
+
+    width: 10rem;
+    height: 3rem;
 
     font-size: 0.9rem;
 
     background: rgba(100, 116, 255, 0.1);
-    color: rgb(100, 116, 255);
-
-    border: 1px solid rgba(100, 116, 255, 0.25);
-    border-radius: 10px;
-
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-
-    cursor: pointer;
-
-    transition: all 0.15s ease;
+    
+    border-radius: 8px;
 }
 
-#new-event-button:hover {
+#previous-day-button:hover, #next-day-button:hover, #new-event-button:hover {
     background: rgba(100, 116, 255, 0.2);
-    border-color: rgba(100, 116, 255, 0.4);
     transform: translateY(-1px);
+    border-color: rgba(100, 116, 255, 0.4);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
 }
 
-#new-event-button:active {
+#previous-day-button:active, #next-day-button:active, #new-event-button:active {
     transform: translateY(0px);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -92,7 +147,7 @@ nav li {
 }
 
 .schedule-wrapper {
-    height: 70vh;
+    height: 65vh;
     width: 90vw;
 
     display: grid;
@@ -125,6 +180,7 @@ nav li {
 
 .event-container > span {
     color: white;
+    font-size: 0.8rem;
 }
 
 .times-container {
@@ -163,22 +219,44 @@ nav li {
 }
 
 @media only screen and (max-width: 480px) {
-    nav li {
-        flex: 1;
-    }
+    
 }
 
 @media only screen and (max-height: 600px) {
     .schedule-wrapper {
-        height: 60vh;
+        height: 50vh;
     }
 }
 
-@media only screen and (max-width: 400px) {
+@media only screen and (max-width: 480px) {
     :root {
         --schedule-column-count: 1;
     }
 
+    nav ul {
+        gap: 0;
+        padding: 0;
+        height: 100%;
+    }
+
+    nav li {
+        flex: 1;
+    }
+
+    nav a {
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
+    }
+
+    .button-container > button {
+        display: flex;
+    }
+
+    .button-container > #new-event-button {
+        flex: 1;
+    }
+    
     .days-container > div {
         visibility: hidden;
     }

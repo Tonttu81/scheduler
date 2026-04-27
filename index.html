@@ -9,16 +9,18 @@
 <body>
     <nav>
         <ul>
-            <li><a>Scheduler</a></li><li><a>Settings</a></li>
+            <li><a class="active" href="index.html">Scheduler</a></li>
+            <li><a href="settings.html">Settings</a></li>
         </ul>
     </nav>
 
-    <div>
+    <div class="button-container">
+        <button id="previous-day-button" type="button">🠘</button>
         <button id="new-event-button" type="button">New event</button>
+        <button id="next-day-button" type="button">🠚</button>
     </div>
 
     <div class="container-grid">
-        
         <div class="days-container">
             <div>
                 <div>6.4.</div>

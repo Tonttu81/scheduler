@@ -376,12 +376,9 @@ nav a.active {
         flex: 1;
     }
     
-    .days-container > div {
-        display: none;
-    }
-
-    .days-container > div:first-child {
-        display: flex;
+    .days-container {
+        width: calc(7 * var(--schedule-cell-width));
+        grid-template-columns: 1fr;
     }
 
     .schedule-container {

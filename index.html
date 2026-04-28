@@ -83,11 +83,11 @@
         </div>
     </div>
 
-    <div id="new-event-window">
+    <div class="popup-window" id="new-event-window">
         <form id="new-event-form">
             <div class="close-button-container">
                 <h1>Add new event</h1>
-                <button id="new-event-close-button" type="button">✕</button>
+                <button class="close-button" id="new-event-close-button" type="button">✕</button>
             </div>
 
             <input type="text" name="title" placeholder="Title" maxlength="300" autocomplete="off">
@@ -118,6 +118,19 @@
             
             <button id="create-new-event-button" type="submit">Add event</button>
         </form>
+    </div>
+
+    <div class="popup-window" id="event-info-window">
+        <div class="close-button-container">
+            <h1 id="event-info-title"></h1>
+            <button class="close-button" id="event-info-close-button" type="button">✕</button>
+        </div>
+
+        <div class="event-info">
+            <span id="event-info-time"></span>
+            <p id="event-info-description"></p>
+            <button class="caution-button" id="event-info-delete-button">Delete event</button>
+        </div>
     </div>
 
     <script type="module" src="./js/functions.js"></script>

@@ -2,10 +2,12 @@
     --schedule-column-count: 7;
     --schedule-row-count: 24;
     --schedule-cell-width: 220px;
-    --schedule-cell-height: 80px;
+    --schedule-cell-height: 50px;
     --schedule-times-width: clamp(3rem, 8vw, 20rem);
 
     --main-color: rgb(100, 116, 255);
+    --main-color-hover: rgba(100, 116, 255, 0.1);
+    --main-color-active: rgba(100, 116, 255, 0.2);
     --dark-text-color: #2b2b2b;
 
     --line-color: rgba(0, 0, 0, 0.5);
@@ -67,12 +69,8 @@ nav a:hover {
     color: var(--main-color);;
 }
 
-nav a:active {
-    background: rgba(100, 116, 255, 0.2);
-}
-
 nav a.active {
-    background: rgba(100, 116, 255, 0.15);
+    background: rgba(100, 116, 255, 0.2);
     color: var(--main-color);;
     font-weight: 600;
 }
@@ -96,7 +94,7 @@ nav a.active {
 
     color: var(--main-color);;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-    border: 1px solid rgba(100, 116, 255, 0.25);
+    border: 1px solid rgba(100, 116, 255, 0.20);
 
     cursor: pointer;
     transition: all 0.15s ease;
@@ -200,7 +198,7 @@ nav a.active {
 
     position: relative;
 
-    background-color: var(--main-color);;
+    background-color: var(--main-color);
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
     
     border-radius: 10px;
@@ -209,13 +207,15 @@ nav a.active {
     margin-right: 0.5rem;
 
     overflow: hidden;
+    cursor: pointer;
 }
 
 .event-container > span {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     opacity: 80%;
     color: white;
 
+    white-space: nowrap;
     overflow: hidden;
 }
 
@@ -246,7 +246,7 @@ nav a.active {
     transform: translateY(calc(var(--schedule-cell-height) * -0.14));
 }
 
-#new-event-window {
+.popup-window {
     width: min(28rem, 90vw);
     padding: 1.5rem;
     
@@ -277,9 +277,11 @@ nav a.active {
 .close-button-container > h1 {
     font-size: 1.3rem;
     margin: 0;
+
+    word-break: break-all;
 }
 
-#new-event-close-button {
+.close-button {
     width: 2rem;
     height: 2rem;
 
@@ -290,10 +292,11 @@ nav a.active {
     cursor: pointer;
 
     border-radius: 6px;
+
     transition: background 0.15s ease;
 }
 
-#new-event-close-button:hover {
+.close-button:hover {
     background: rgba(0, 0, 0, 0.1);
 }
 
@@ -334,6 +337,25 @@ nav a.active {
     background: rgb(85, 100, 240);
 }
 
+.event-info {
+    display: flex;
+    flex-direction: column;
+
+    gap: 1rem;
+}
+
+.event-info > span {
+    font-size: 0.9rem;
+    color: rgba(0, 0, 0, 0.6);
+}
+
+.event-info p {
+    font-size: 0.9rem;
+    margin: 0;
+    
+    word-break: break-all;
+}
+
 .settings-container {
     max-width: 600px;
     display: flex;
@@ -361,7 +383,7 @@ nav a.active {
     font-size: 1.2rem;
 }
 
-.import-instructions {
+.instructions {
     font-size: 0.9rem;
     color: rgba(0, 0, 0, 0.6);
 }
@@ -376,13 +398,13 @@ nav a.active {
     font-size: 0.9rem;
 }
 
-#json-import-button, #json-file-export, #clear-events-button {
+#json-import-button, #json-file-export, .caution-button {
     align-self: flex-start;
 
     padding: 0.5rem 1rem;
 
     background: rgba(100, 116, 255, 0.1);
-    color: rgb(100, 116, 255);
+    color: var(--main-color);
     border: 1px solid rgba(100, 116, 255, 0.25);
     border-radius: 8px;
 
@@ -396,13 +418,14 @@ nav a.active {
     border-color: rgba(100, 116, 255, 0.4);
 }
 
-#clear-events-button {
+.caution-button {
     background: rgba(255, 80, 80, 0.1);
     color: rgb(200, 50, 50);
     border: 1px solid rgba(255, 80, 80, 0.3);
+    transition: none;
 }
 
-#clear-events-button:hover {
+.caution-button:hover {
     background: rgba(255, 80, 80, 0.2);
     border-color: rgba(255, 80, 80, 0.4);
 }

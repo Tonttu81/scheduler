@@ -3,6 +3,13 @@ const dayElements = document.querySelectorAll('.day')
 const previousDayButton = document.getElementById('previous-day-button')
 const nextDayButton = document.getElementById('next-day-button')
 
+const eventInfoWindow = document.getElementById('event-info-window')
+const eventInfoCloseButton = document.getElementById('event-info-close-button')
+const eventInfoTitle = document.getElementById('event-info-title')
+const eventInfoTime = document.getElementById('event-info-time')
+const eventInfoDescription = document.getElementById('event-info-description')
+const eventInfoDeleteButton = document.getElementById('event-info-delete-button')
+
 const newEventButton = document.getElementById('new-event-button')
 const newEventWindow = document.getElementById('new-event-window')
 const newEventCloseButton = document.getElementById('new-event-close-button')
@@ -16,6 +23,10 @@ let cellHeight = parseFloat(
 
 previousDayButton.addEventListener('click', changeDay)
 nextDayButton.addEventListener('click', changeDay)
+
+eventInfoCloseButton.addEventListener('click', closeEventInfoWindow)
+eventInfoDeleteButton.addEventListener('click', deleteEventElement)
+
 newEventButton.addEventListener('click', showNewEventWindow)
 newEventCloseButton.addEventListener('click', closeNewEventWindow)
 eventForm.addEventListener('submit', (e) => {
@@ -36,23 +47,57 @@ const currentHour = date.getHours()
 
 let visibleDay = currentDay
 
+// Used for deleting events
+let openEventIndex = null
+
 updateCellSize()
 updateDates()
 loadEvents()
 hideExtraEvents(mediaQuery)
 
 function showNewEventWindow() {
-    newEventWindow.style.visibility = 'visible'
-
     eventForm.elements.title.value = ''
     eventForm.elements.desc.value = ''
     eventForm.elements.days.value = visibleDay
     eventForm.elements.start.value = String(currentHour) + ':00'
     eventForm.elements.end.value = String(currentHour + 1) + ':00'
+
+    newEventWindow.style.visibility = 'visible'
 }
 
 function closeNewEventWindow() {
     newEventWindow.style.visibility = 'hidden'
+}
+
+function showEventInfoWindow(e) {
+    const eventId = e.currentTarget.id
+
+    // Find which event was opened and populate it's fields
+    openEventIndex = events.findIndex(event => event.id === eventId)
+
+    eventInfoTitle.innerHTML = events[openEventIndex].title
+    eventInfoTime.innerHTML = events[openEventIndex].startTime + ' - ' + events[openEventIndex].endTime
+    eventInfoDescription.innerHTML = events[openEventIndex].desc
+
+    eventInfoWindow.style.visibility = 'visible'
+}
+
+function closeEventInfoWindow() {
+    openEventIndex = null
+    eventInfoWindow.style.visibility = 'hidden'
+}
+
+function deleteEventElement() {
+    if (openEventIndex !== null) {
+        const eventElement = document.getElementById(events[openEventIndex].id)
+
+        // Remove event from our events list and then remove the element
+        events = events.filter(event => event.id !== eventElement.id)
+        eventElement.remove()
+        
+        saveEvents()
+        closeEventInfoWindow()
+    }
 }
 
 function timeStrToGrid(timeStr) {
@@ -71,11 +116,11 @@ function timeStrToGrid(timeStr) {
 }
 
 function createEventElements(id, title, desc, day, startTime, endTime) {
-    console.log(id)
     const newEvent = document.createElement('div')
     newEvent.className = 'event-container'
     newEvent.id = id
     gridElement.appendChild(newEvent)
+    newEvent.addEventListener('click', showEventInfoWindow)
 
     const { row: startRow, offset: startOffset } = timeStrToGrid(startTime)
     const { row: endRow, offset: endOffset } = timeStrToGrid(endTime)

@@ -17,7 +17,7 @@
     <div class="settings-container">
         <div class="import-container">
             <h1>Import schedule</h1>
-            <span class="import-instructions">Select a file or input JSON into the input field.</span>
+            <span class="instructions">Select a file or input JSON into the input field.</span>
             <input type="file" id="json-file-import" accept=".json">
             <input type="text" id="json-text-import">
             <button id="json-import-button">Import</button>
@@ -26,13 +26,14 @@
 
         <div class="export-container">
             <h1>Export schedule</h1>
+            <span class="instructions">Copy JSON from below or download JSON as a file.</span>
             <input type="text" id="json-text-export" readonly></input>
             <a id="json-file-export" download="schedule.json">Download</a>
         </div>
 
         <div class="other-container">
             <h1>Other</h1>
-            <button id="clear-events-button">Clear events</button>
+            <button class="caution-button" id="clear-events-button">Clear events</button>
         </div>
     </div>
     

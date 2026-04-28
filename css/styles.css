@@ -334,6 +334,84 @@ nav a.active {
     background: rgb(85, 100, 240);
 }
 
+.settings-container {
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+
+    margin: 2rem auto;
+    padding: 1rem;
+    gap: 1rem;
+}
+
+.import-container, .export-container, .other-container {
+    display: flex;
+    flex-direction: column;
+    
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+
+    padding: 1rem;
+    gap: 0.8rem;
+}
+
+.settings-container h1 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.import-instructions {
+    font-size: 0.9rem;
+    color: rgba(0, 0, 0, 0.6);
+}
+
+#json-file-import, #json-text-import, #json-text-export {
+    width: 100%;
+    padding: 0.5rem;
+
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+
+    font-size: 0.9rem;
+}
+
+#json-import-button, #json-file-export, #clear-events-button {
+    align-self: flex-start;
+
+    padding: 0.5rem 1rem;
+
+    background: rgba(100, 116, 255, 0.1);
+    color: rgb(100, 116, 255);
+    border: 1px solid rgba(100, 116, 255, 0.25);
+    border-radius: 8px;
+
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+#json-import-button:hover, #json-file-export:hover {
+    background: rgba(100, 116, 255, 0.2);
+    border-color: rgba(100, 116, 255, 0.4);
+}
+
+#clear-events-button {
+    background: rgba(255, 80, 80, 0.1);
+    color: rgb(200, 50, 50);
+    border: 1px solid rgba(255, 80, 80, 0.3);
+}
+
+#clear-events-button:hover {
+    background: rgba(255, 80, 80, 0.2);
+    border-color: rgba(255, 80, 80, 0.4);
+}
+
+#json-import-result {
+    font-size: 0.9rem;
+    color: rgba(0, 0, 0, 0.6);
+}
+
 /* These two are kind of stupid but no time to fix :( */
 @media only screen and (max-height: 580px) {
     .container-grid {

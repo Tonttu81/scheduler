@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week scheduler</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="/index.html">Scheduler</a></li>
+            <li><a class="active" href="/html/settings.html">Settings</a></li>
+        </ul>
+    </nav>
+
+    <div class="settings-container">
+        <div class="import-container">
+            <h1>Import schedule</h1>
+            <span class="import-instructions">Select a file or input JSON into the input field.</span>
+            <input type="file" id="json-file-import" accept=".json">
+            <input type="text" id="json-text-import">
+            <button id="json-import-button">Import</button>
+            <div id="json-import-result"></div>
+        </div>
+
+        <div class="export-container">
+            <h1>Export schedule</h1>
+            <input type="text" id="json-text-export" readonly></input>
+            <a id="json-file-export" download="schedule.json">Download</a>
+        </div>
+
+        <div class="other-container">
+            <h1>Other</h1>
+            <button id="clear-events-button">Clear events</button>
+        </div>
+    </div>
+    
+
+    <script type="module" src="/js/settings.js"></script>
+</body>
+</html>

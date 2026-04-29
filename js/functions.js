@@ -75,7 +75,13 @@ function showEventInfoWindow(e) {
     // Find which event was opened and populate it's fields
     openEventIndex = events.findIndex(event => event.id === eventId)
 
-    eventInfoTitle.innerHTML = events[openEventIndex].title
+    
+    if (events[openEventIndex].title === '') {
+        eventInfoTitle.innerHTML = 'No title'
+    } else {
+        eventInfoTitle.innerHTML = events[openEventIndex].title
+    }
+
     eventInfoTime.innerHTML = events[openEventIndex].startTime + ' - ' + events[openEventIndex].endTime
     eventInfoDescription.innerHTML = events[openEventIndex].desc
 
@@ -147,7 +153,7 @@ function createEventElements(id, title, desc, day, startTime, endTime) {
     const newEventTitle = document.createElement('span')
     newEvent.appendChild(newEventTitle)
 
-    if (title == '') {
+    if (title === '') {
         title = 'No title'
     } 
 

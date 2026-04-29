@@ -161,7 +161,7 @@ function createEventElements(id, title, desc, day, startTime, endTime) {
     }
 
     // Same with description
-    if (height >= cellHeight * 0.9) {
+    if (height >= cellHeight * 1.1) {
         const descElement = document.createElement('span')
         newEvent.appendChild(descElement)
         descElement.innerHTML = desc
